@@ -5,7 +5,7 @@ conn = sqlite3.connect('db/grades.sqlite3')
 
 cursor = conn.cursor()
 
-cursor.execute('CREATE TABLE IF NOT EXISTS classes (id TEXT PRIMARY KEY, name TEXT)')
+cursor.execute('CREATE TABLE IF NOT EXISTS classes (id TEXT PRIMARY KEY, name TEXT, totalPoints INTEGER)')
 
 def intInput(message):
     while True:
@@ -22,8 +22,10 @@ def choices(choices, inputMsg):
 def addClass():
     name = input('Enter class display name (ie: Python I): ')
     id = input('Enter class ID (ie: CSC235): ')
+    totalPoints = intInput('Enter total points: ')
     try:
-        cursor.execute('INSERT INTO classes (id, name) VALUES (?,?)', (id, name))
+        cursor.execute('INSERT INTO classes (id, name, totalPoints) VALUES (?,?, ?)', (id, name, totalPoints))
+        # TODO: Add max score column
         cursor.execute(f'CREATE TABLE IF NOT EXISTS {id} (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, grade INTEGER)')
         conn.commit()
     except sqlite3.IntegrityError:
@@ -43,6 +45,27 @@ def addGrade():
     cursor.execute(f'INSERT INTO {id} (name, grade) VALUES (?,?)', (name, grade))
     conn.commit()
 
+def viewGrades():
+    # TODO: Check if table exists
+    id = input('Enter class ID: ')
+    cursor.execute(f'SELECT * FROM {id}')
+    grades = cursor.fetchall()
+    for grade in grades:
+        print(f'{grade[0]}: {grade[1]} - {grade[2]}')
+def getClasses():
+    cursor.execute('SELECT id, totalPoints FROM classes')
+    return cursor.fetchall()
+
+def calculateGPA():
+    # TODO: Option for only graded assignments
+    classes = getClasses()
+    for class_ in classes:
+        cursor.execute(f'SELECT grade FROM {class_[0]}')
+        grades = cursor.fetchall()
+        total = 0
+        for grade in grades:
+            total += grade[0]
+        print(total / class_[1])
 while True:
     choice = choices([
         '1. Add new class', 
@@ -58,14 +81,12 @@ while True:
     elif choice == 2:
         viewClasses()
     elif choice == 3:
-        # TODO: Add grade
         viewClasses()
         addGrade()
     elif choice == 4:
-        # TODO: View grades
-        print('Grades')
+        viewClasses()
+        viewGrades()
     elif choice == 5:
-        # TODO: Calculate GPA
-        print('GPA')
+        calculateGPA()
     elif choice == 0:
         break
