@@ -28,6 +28,7 @@ def addClass():
         # TODO: Add max score column
         cursor.execute(f'CREATE TABLE IF NOT EXISTS {id} (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, grade INTEGER)')
         conn.commit()
+        colors.printGreenLine('Class added')
     except sqlite3.IntegrityError:
         colors.printRedLine('Class already exists')
 
@@ -78,15 +79,20 @@ while True:
 
     if choice == 1:
         addClass()
+        input()
     elif choice == 2:
         viewClasses()
+        input()
     elif choice == 3:
         viewClasses()
         addGrade()
+        input()
     elif choice == 4:
         viewClasses()
         viewGrades()
+        input()
     elif choice == 5:
         calculateGPA()
+        input()
     elif choice == 0:
         break
