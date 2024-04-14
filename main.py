@@ -1,18 +1,33 @@
 import sqlite3 
+from colors import colors
 
-conn = sqlite3.connect('example.db')
+conn = sqlite3.connect('db/grades.sqlite3')
+
 cursor = conn.cursor()
+
+cursor.execute('CREATE TABLE IF NOT EXISTS classes (id TEXT PRIMARY KEY, name TEXT)')
+
 def intInput(message):
     while True:
         try:
             return int(input(message))
         except ValueError:
-            print('Please enter a number')
+            colors.printRedLine('Invalid input, try again.')
 
 def choices(choices, inputMsg):
-    for choice in choice:
+    for choice in choices:
         print(choice)
     return intInput(inputMsg)
+
+def addClass():
+    name = input('Enter class name: ')
+    id = input('Enter class ID: ')
+    try:
+        cursor.execute('INSERT INTO classes (id, name) VALUES (?,?)', (id, name))
+        cursor.execute(f'CREATE TABLE IF NOT EXISTS {id} (id INT PRIMARY KEY, name TEXT, grade INT)')
+        conn.commit()
+    except sqlite3.IntegrityError:
+        colors.printRedLine('Class already exists')
 
 while True:
     choice = choices([
@@ -23,11 +38,11 @@ while True:
         '5. Calculate GPA', 
         '0. Exit'], 
         'Enter your choice: ')
-    choice = int(input('Enter your choice: '))
 
     if choice == 1:
         # TODO: Add a new class
-        print('Enter class name')
+        addClass()
+    
     elif choice == 2:
         # TODO: View classes
         print('Classes')
