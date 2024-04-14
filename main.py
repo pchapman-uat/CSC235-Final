@@ -15,6 +15,7 @@ def intInput(message):
             colors.printRedLine('Invalid input, try again.')
 
 def choices(choices, inputMsg):
+    # TODO: Add index automaticly
     for choice in choices:
         print(choice)
     return intInput(inputMsg)
@@ -33,6 +34,7 @@ def addClass():
         colors.printRedLine('Class already exists')
 
 def viewClasses():
+    # TODO: Display if there are no grades
     cursor.execute('SELECT * FROM classes')
     classes = cursor.fetchall()
     for class_ in classes:
