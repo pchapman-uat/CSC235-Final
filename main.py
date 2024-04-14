@@ -20,11 +20,11 @@ def choices(choices, inputMsg):
     return intInput(inputMsg)
 
 def addClass():
-    name = input('Enter class name: ')
-    id = input('Enter class ID: ')
+    name = input('Enter class display name (ie: Python I): ')
+    id = input('Enter class ID (ie: CSC235): ')
     try:
         cursor.execute('INSERT INTO classes (id, name) VALUES (?,?)', (id, name))
-        cursor.execute(f'CREATE TABLE IF NOT EXISTS {id} (id INT PRIMARY KEY, name TEXT, grade INT)')
+        cursor.execute(f'CREATE TABLE IF NOT EXISTS {id} (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, grade INTEGER)')
         conn.commit()
     except sqlite3.IntegrityError:
         colors.printRedLine('Class already exists')
@@ -34,6 +34,14 @@ def viewClasses():
     classes = cursor.fetchall()
     for class_ in classes:
         print(f'{class_[0]}: {class_[1]}')
+
+def addGrade():
+    # TODO: Check if table exists
+    id = input('Enter class ID: ')
+    grade = intInput('Enter grade: ')
+    name = input('Enter assignment name: ')
+    cursor.execute(f'INSERT INTO {id} (name, grade) VALUES (?,?)', (name, grade))
+    conn.commit()
 
 while True:
     choice = choices([
@@ -46,15 +54,13 @@ while True:
         'Enter your choice: ')
 
     if choice == 1:
-        # TODO: Add a new class
         addClass()
-    
     elif choice == 2:
-        # TODO: View classes
         viewClasses()
     elif choice == 3:
         # TODO: Add grade
-        print('Enter class name')
+        viewClasses()
+        addGrade()
     elif choice == 4:
         # TODO: View grades
         print('Grades')
