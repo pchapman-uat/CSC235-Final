@@ -41,7 +41,7 @@ def printRedLine(text):
 def printBlackLine(text):
     printLine(ANSI_BLACK, text)
 
-def printGreenline(text):
+def printGreenLine(text):
     printLine(ANSI_GREEN, text)
 
 def printYellowLine(text):
