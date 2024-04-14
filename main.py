@@ -29,6 +29,12 @@ def addClass():
     except sqlite3.IntegrityError:
         colors.printRedLine('Class already exists')
 
+def viewClasses():
+    cursor.execute('SELECT * FROM classes')
+    classes = cursor.fetchall()
+    for class_ in classes:
+        print(f'{class_[0]}: {class_[1]}')
+
 while True:
     choice = choices([
         '1. Add new class', 
@@ -45,7 +51,7 @@ while True:
     
     elif choice == 2:
         # TODO: View classes
-        print('Classes')
+        viewClasses()
     elif choice == 3:
         # TODO: Add grade
         print('Enter class name')
