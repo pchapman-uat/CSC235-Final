@@ -27,7 +27,7 @@ def addClass():
     try:
         cursor.execute('INSERT INTO classes (id, name, totalPoints) VALUES (?,?, ?)', (id, name, totalPoints))
         # TODO: Add max score column
-        cursor.execute(f'CREATE TABLE IF NOT EXISTS {id} (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, grade INTEGER)')
+        cursor.execute(f'CREATE TABLE IF NOT EXISTS {id} (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, grade INTEGER, maxGrade INTEGER)')
         conn.commit()
         colors.printGreenLine('Class added')
     except sqlite3.IntegrityError:
@@ -49,8 +49,9 @@ def addGrade():
     while id not in allIds: 
         id = input(colors.genRedLine("Not a valid id, please try again"))
     grade = intInput('Enter grade: ')
+    maxGrade = intInput("Enter the max score: ")
     name = input('Enter assignment name: ')
-    cursor.execute(f'INSERT INTO {id} (name, grade) VALUES (?,?)', (name, grade))
+    cursor.execute(f'INSERT INTO {id} (name, grade, maxGrade) VALUES (?,?,?)', (name, grade, maxGrade))
     conn.commit()
 
 def viewGrades():
@@ -78,15 +79,22 @@ def calculateGPA():
             id = input(colors.genRedLine("Not a valid class"))
         cursor.execute(f"SELECT id, totalPoints FROM classes WHERE id = '{id}'")
         classes = cursor.fetchall()
+    GPAType = choices(["1. All assignments", "2. Only Graded"], "Please select the GPA type")
     for class_ in classes:
-        cursor.execute(f'SELECT grade FROM {class_[0]}')
+        cursor.execute(f'SELECT grade, maxGrade FROM {class_[0]}')
         grades = cursor.fetchall()
         total = 0
+        maxScore = 0
         for grade in grades:
             total += grade[0]
+            maxScore += grade[1]
         print(class_[0]+":")
-        print("Total: ", total, "Of:", class_[1])
-        print((total / class_[1]) * 4)
+        if GPAType == 1:
+            print("Total: ", total, "Of:", class_[1])
+            print((total / class_[1]) * 4)
+        else:
+            print("Total: ", total, "Of:", maxScore,"*")
+            print((total / maxScore) * 4)
 while True:
     choice = choices([
         '1. Add new class', 
