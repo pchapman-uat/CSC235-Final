@@ -16,8 +16,11 @@ def intInput(message):
 
 def choices(choices, inputMsg):
     # TODO: Add index automaticly
-    for choice in choices:
-        print(choice)
+    for i in range(len(choices)):
+        if choices[i] == "Exit":
+            print(f"0.", choices[i])
+        else:
+            print(f"{i+1}.", choices[i])
     return intInput(inputMsg)
 
 def addClass():
@@ -68,7 +71,7 @@ def getClasses():
 
 def calculateGPA():
     # TODO: Option for only graded assignments
-    choice = choices(["1. All", "2. Single"], "Please select a choice")
+    choice = choices(["All", "Single"], "Please select a choice")
     classes = []
     if choice == 1: 
         classes = getClasses()
@@ -79,7 +82,7 @@ def calculateGPA():
             id = input(colors.genRedLine("Not a valid class"))
         cursor.execute(f"SELECT id, totalPoints FROM classes WHERE id = '{id}'")
         classes = cursor.fetchall()
-    GPAType = choices(["1. All assignments", "2. Only Graded"], "Please select the GPA type")
+    GPAType = choices(["All assignments", "Only Graded"], "Please select the GPA type")
     for class_ in classes:
         cursor.execute(f'SELECT grade, maxGrade FROM {class_[0]}')
         grades = cursor.fetchall()
@@ -97,12 +100,12 @@ def calculateGPA():
             print((total / maxScore) * 4)
 while True:
     choice = choices([
-        '1. Add new class', 
-        '2. View classes', 
-        '3. Add a grade', 
-        '4. View grades', 
-        '5. Calculate GPA', 
-        '0. Exit'], 
+        'Add new class', 
+        'View classes', 
+        'Add a grade', 
+        'View grades', 
+        'Calculate GPA', 
+        'Exit'], 
         'Enter your choice: ')
 
     if choice == 1:
