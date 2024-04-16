@@ -37,12 +37,18 @@ def viewClasses():
     # TODO: Display if there are no grades
     cursor.execute('SELECT * FROM classes')
     classes = cursor.fetchall()
+    allIds = []
     for class_ in classes:
+        allIds.append(class_[0])
         print(f'{class_[0]}: {class_[1]}')
+    return allIds
 
 def addGrade():
+    allIds = viewClasses()
     # TODO: Check if table exists
     id = input('Enter class ID: ')
+    while id not in allIds: 
+        id = input(colors.genRedLine("Not a valid id, please try again"))
     grade = intInput('Enter grade: ')
     name = input('Enter assignment name: ')
     cursor.execute(f'INSERT INTO {id} (name, grade) VALUES (?,?)', (name, grade))
@@ -86,7 +92,6 @@ while True:
         viewClasses()
         input()
     elif choice == 3:
-        viewClasses()
         addGrade()
         input()
     elif choice == 4:
