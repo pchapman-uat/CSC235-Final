@@ -54,7 +54,6 @@ def addGrade():
     conn.commit()
 
 def viewGrades():
-    # TODO: Check if table exists
     id = input('Enter class ID: ')
     cursor.execute(f'SELECT * FROM {id}')
     grades = cursor.fetchall()
@@ -68,14 +67,26 @@ def getClasses():
 
 def calculateGPA():
     # TODO: Option for only graded assignments
-    classes = getClasses()
+    choice = choices(["1. All", "2. Single"], "Please select a choice")
+    classes = []
+    if choice == 1: 
+        classes = getClasses()
+    else: 
+        allids = viewClasses()
+        id = input('Enter class ID: ')
+        while id not in allids:
+            id = input(colors.genRedLine("Not a valid class"))
+        cursor.execute(f"SELECT id, totalPoints FROM classes WHERE id = '{id}'")
+        classes = cursor.fetchall()
     for class_ in classes:
         cursor.execute(f'SELECT grade FROM {class_[0]}')
         grades = cursor.fetchall()
         total = 0
         for grade in grades:
             total += grade[0]
-        print(total / class_[1])
+        print(class_[0]+":")
+        print("Total: ", total, "Of:", class_[1])
+        print((total / class_[1]) * 4)
 while True:
     choice = choices([
         '1. Add new class', 
