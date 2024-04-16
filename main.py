@@ -34,7 +34,7 @@ def addClass():
         colors.printRedLine('Class already exists')
 
 def viewClasses():
-    # TODO: Display if there are no grades
+    # TOOD: Display if there are no classes
     cursor.execute('SELECT * FROM classes')
     classes = cursor.fetchall()
     allIds = []
@@ -45,7 +45,6 @@ def viewClasses():
 
 def addGrade():
     allIds = viewClasses()
-    # TODO: Check if table exists
     id = input('Enter class ID: ')
     while id not in allIds: 
         id = input(colors.genRedLine("Not a valid id, please try again"))
@@ -59,6 +58,8 @@ def viewGrades():
     id = input('Enter class ID: ')
     cursor.execute(f'SELECT * FROM {id}')
     grades = cursor.fetchall()
+    if len(grades) == 0:
+        colors.printYellowLine("No grades found")
     for grade in grades:
         print(f'{grade[0]}: {grade[1]} - {grade[2]}')
 def getClasses():
