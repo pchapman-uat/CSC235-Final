@@ -47,7 +47,8 @@ def addClass():
         colors.printRedLine('Class already exists')
 
 def viewClasses():
-    # TOOD: Display if there are no classes
+    # TODO: Display if there are no classes
+    # TODO: Display max score
     cursor.execute('SELECT * FROM classes')
     classes = cursor.fetchall()
     allIds = []
@@ -135,36 +136,76 @@ def editGrade(classID):
     cursor.execute(cmd)
     conn.commit()
 
+colors.printBlueLine("\t\tGPA Calulator")
+colors.printPurpleLine("\t     By: Preston Chapman")
+colors.printRedLine("\t\tCSC235 | UAT")
+print()
+
+print("This application will allow you to store your grades, and calculate the GPA")
+print("Select help for more infomation")
+
 while True:
+    # TODO: Color code choices
     choice = choices([
         'Add new class', 
         'View classes', 
         'Add a grade', 
         'View grades',
         'Edit a grade', 
-        'Calculate GPA', 
+        'Calculate GPA',
+        'Help' 
         'Exit'], 
         'Enter your choice: ')
 
     if choice == 1:
+        # TODO: Add header
         addClass()
         input()
     elif choice == 2:
+        # TODO: Add header
         viewClasses()
+        # TODO: Inform user to push enter after viewing
         input()
     elif choice == 3:
+        # TODO: Add header
         addGrade()
         input()
     elif choice == 4:
+        # TODO: Add Header
         viewClasses()
         viewGrades()
         input()
     elif choice == 5:
+        # TODO: Add Header
         viewClasses()
         classID = viewGrades()
         editGrade(classID)
     elif choice == 6:
+        # TODO: Add header
         calculateGPA()
         input()
+    elif choice == 7:
+        # TODO Add header
+        choice = choices([
+        'Add new class', 
+        'View classes', 
+        'Add a grade', 
+        'View grades',
+        'Edit a grade', 
+        'Calculate GPA',
+        'Exit'], 
+        'Enter your choice: ')
+        if choice == 1:
+            print("1. Add a class")
+            print("This will add a class to the database")
+            print("A class is needed to add a grade")
+            print("Classes will accept a ID, Name, and max score")
+        elif choice == 2:
+            print("1. View Classes")
+            print("This will display the following information")
+            print("Class ID")
+            print("Class Name")
+            # TODO: Uncomment once complete 
+            # print("Max Score") 
     elif choice == 0:
         break
