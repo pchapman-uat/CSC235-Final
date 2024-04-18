@@ -14,6 +14,17 @@ def intInput(message):
         except ValueError:
             colors.printRedLine('Invalid input, try again.')
 
+def intBlankInput(message):
+    while True:
+        resonse = input(message)
+        try:
+            return int(resonse)
+        except ValueError:
+            if resonse == "":
+                return resonse
+            else:
+                colors.printRedLine('Invalid input, try again.')
+
 def choices(choices, inputMsg):
     # TODO: Add index automaticly
     for i in range(len(choices)):
@@ -29,7 +40,6 @@ def addClass():
     totalPoints = intInput('Enter total points: ')
     try:
         cursor.execute('INSERT INTO classes (id, name, totalPoints) VALUES (?,?, ?)', (id, name, totalPoints))
-        # TODO: Add max score column
         cursor.execute(f'CREATE TABLE IF NOT EXISTS {id} (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, grade INTEGER, maxGrade INTEGER)')
         conn.commit()
         colors.printGreenLine('Class added')
@@ -64,7 +74,8 @@ def viewGrades():
     if len(grades) == 0:
         colors.printYellowLine("No grades found")
     for grade in grades:
-        print(f'{grade[0]}: {grade[1]} - {grade[2]}')
+        print(f'{grade[0]}: {grade[1]} - {grade[2]}/{grade[3]}')
+    return id
 def getClasses():
     cursor.execute('SELECT id, totalPoints FROM classes')
     return cursor.fetchall()
@@ -98,12 +109,39 @@ def calculateGPA():
         else:
             print("Total: ", total, "Of:", maxScore,"*")
             print((total / maxScore) * 4)
+def getGrade(gradeID, classID):
+    cursor.execute(f"SELECT * FROM {classID} WHERE id={gradeID}")
+    grade = cursor.fetchone()
+    return grade
+
+def editGrade(classID):
+    id = intInput("Please enter the grade ID")
+    grade = getGrade(id, classID)
+
+    print("Selected Assignment")
+    print(grade[1])
+    print(f"Grade: {grade[2]}/{grade[3]}")
+    newGrade = intBlankInput(f"Please enter the new grade (old: {grade[2]})")
+    newMaxGrade = intBlankInput(f"Please enter the new max grade (old: {grade[3]})")
+    newName = intBlankInput(f"Please enter the new Name (old: {grade[1]})")
+
+    if newGrade == "":
+        newGrade = grade[2]
+    if newMaxGrade == "":
+        newMaxGrade = grade[3]
+    if newName == "":
+        newName = grade[1]
+    cmd = f"UPDATE {classID} SET grade={newGrade}, maxGrade={newMaxGrade}, name='{newName}' WHERE id={id}"
+    cursor.execute(cmd)
+    conn.commit()
+
 while True:
     choice = choices([
         'Add new class', 
         'View classes', 
         'Add a grade', 
-        'View grades', 
+        'View grades',
+        'Edit a grade', 
         'Calculate GPA', 
         'Exit'], 
         'Enter your choice: ')
@@ -122,6 +160,10 @@ while True:
         viewGrades()
         input()
     elif choice == 5:
+        viewClasses()
+        classID = viewGrades()
+        editGrade(classID)
+    elif choice == 6:
         calculateGPA()
         input()
     elif choice == 0:
