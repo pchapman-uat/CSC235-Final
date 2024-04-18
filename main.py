@@ -133,6 +133,7 @@ def editGrade(classID):
     if newName == "":
         newName = grade[1]
     cmd = f"UPDATE {classID} SET grade={newGrade}, maxGrade={newMaxGrade}, name='{newName}' WHERE id={id}"
+    # TODO: Put in try exept
     cursor.execute(cmd)
     conn.commit()
 
@@ -214,5 +215,17 @@ while True:
             print("Then you will add the grade you got on the asignemnt")
             print("Then the max score you can get on the assignment")
             print("Then the assignment name or number")
+        elif choice == 4:
+            print("4. View Grades")
+            print("This will display all grades for a class")
+            print("It will prompt you to enter a class by its ID")
+            print('Then it will print the assignment ID, Name, score, and max score for every assignment')
+        elif choice == 5:
+            print('5. Edit a grade')
+            print("This will allow you to edit an existing grade")
+            print("It will prompt you to enter in a class ID")
+            print('Then it will ask for the grade ID')
+            print("Then you will input the new values")
+            print("To keep the value the same push enter")
     elif choice == 0:
         break
