@@ -46,14 +46,14 @@ def addClass():
         colors.printRedLine('Class already exists')
 
 def viewClasses():
-    # TODO: Display if there are no classes
-    # TODO: Display max score
     cursor.execute('SELECT * FROM classes')
     classes = cursor.fetchall()
     allIds = []
     for class_ in classes:
         allIds.append(class_[0])
-        print(f'{class_[0]}: {class_[1]}')
+        print(f'{class_[0]}: {class_[1]} | Total Points: {class_[2]}')
+    if len(allIds) == 0:
+        colors.printYellowLine("No classes found")
     return allIds
 
 def addGrade():
