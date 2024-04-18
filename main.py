@@ -201,11 +201,18 @@ while True:
             print("A class is needed to add a grade")
             print("Classes will accept a ID, Name, and max score")
         elif choice == 2:
-            print("1. View Classes")
+            print("2. View Classes")
             print("This will display the following information")
             print("Class ID")
             print("Class Name")
             # TODO: Uncomment once complete 
             # print("Max Score") 
+        elif choice == 3:
+            print("3. Add a grade")
+            print("This will add a grade to the database")
+            print("First you will select a class to add a grade for")
+            print("Then you will add the grade you got on the asignemnt")
+            print("Then the max score you can get on the assignment")
+            print("Then the assignment name or number")
     elif choice == 0:
         break
