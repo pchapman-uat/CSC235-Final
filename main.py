@@ -131,7 +131,6 @@ def editGrade(classID):
     if newName == "":
         newName = grade[1]
     cmd = f"UPDATE {classID} SET grade={newGrade}, maxGrade={newMaxGrade}, name='{newName}' WHERE id={id}"
-    # TODO: Put in try exept
     cursor.execute(cmd)
     conn.commit()
 
@@ -146,14 +145,14 @@ print("Select help for more infomation")
 while True:
     # TODO: Color code choices
     choice = choices([
-        'Add new class', 
-        'View classes', 
-        'Add a grade', 
+        colors.genGreenLine('Add new class'), 
+        colors.genCyanLine('View classes'), 
+        colors.genBlueLine('Add a grade'), 
         'View grades',
-        'Edit a grade or class', 
-        'Calculate GPA',
-        'Help' 
-        'Exit'], 
+        colors.genYellowLine('Edit a grade or class'), 
+        colors.genPurpleLine('Calculate GPA'),
+        'Help',
+        colors.genRedLine('Exit')], 
         'Enter your choice: ')
 
     if choice == 1:
