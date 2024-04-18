@@ -26,7 +26,6 @@ def intBlankInput(message):
                 colors.printRedLine('Invalid input, try again.')
 
 def choices(choices, inputMsg):
-    # TODO: Add index automaticly
     for i in range(len(choices)):
         if choices[i] == "Exit":
             print(f"0.", choices[i])
@@ -82,7 +81,6 @@ def getClasses():
     return cursor.fetchall()
 
 def calculateGPA():
-    # TODO: Option for only graded assignments
     choice = choices(["All", "Single"], "Please select a choice")
     classes = []
     if choice == 1: 
