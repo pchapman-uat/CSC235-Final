@@ -152,7 +152,7 @@ while True:
         'View classes', 
         'Add a grade', 
         'View grades',
-        'Edit a grade', 
+        'Edit a grade or class', 
         'Calculate GPA',
         'Help' 
         'Exit'], 
@@ -178,6 +178,7 @@ while True:
         input()
     elif choice == 5:
         # TODO: Add Header
+        # TODO: Add edit class
         viewClasses()
         classID = viewGrades()
         editGrade(classID)
@@ -192,7 +193,7 @@ while True:
         'View classes', 
         'Add a grade', 
         'View grades',
-        'Edit a grade', 
+        'Edit a grade or class', 
         'Calculate GPA',
         'Exit'], 
         'Enter your choice: ')
@@ -227,5 +228,11 @@ while True:
             print('Then it will ask for the grade ID')
             print("Then you will input the new values")
             print("To keep the value the same push enter")
+        elif choice == 6:
+            print("6. Calculate GPA")
+            print("This will calculate your GPA on a 4.0 scale")
+            print("First you will select all classes or a singular class")
+            print("Then you will chose to calculate all assignments, or only graded")
+            print("Then it will print your GPA for the selcted class or for all classes")
     elif choice == 0:
         break
