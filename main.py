@@ -27,7 +27,7 @@ def intBlankInput(message):
 
 def choices(choices, inputMsg):
     for i in range(len(choices)):
-        if choices[i] == "Exit":
+        if "Exit" in choices[i]:
             print(f"0.", choices[i])
         else:
             print(f"{i+1}.", choices[i])
@@ -143,12 +143,11 @@ print("This application will allow you to store your grades, and calculate the G
 print("Select help for more infomation")
 
 while True:
-    # TODO: Color code choices
     choice = choices([
         colors.genGreenLine('Add new class'), 
         colors.genCyanLine('View classes'), 
-        colors.genBlueLine('Add a grade'), 
-        'View grades',
+        colors.genGreenLine('Add a grade'), 
+        colors.genBlueLine('View grades'),
         colors.genYellowLine('Edit a grade or class'), 
         colors.genPurpleLine('Calculate GPA'),
         'Help',
