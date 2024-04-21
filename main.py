@@ -101,13 +101,17 @@ def calculateGPA():
         for grade in grades:
             total += grade[0]
             maxScore += grade[1]
-        print(class_[0]+":")
-        if GPAType == 1:
-            print("Total: ", total, "Of:", class_[1])
-            print((total / class_[1]) * 4)
-        else:
-            print("Total: ", total, "Of:", maxScore,"*")
-            print((total / maxScore) * 4)
+        if maxScore != 0:
+            print(class_[0]+":")
+            if GPAType == 1:
+                print("Total: ", total, "Of:", class_[1])
+                print((total / class_[1]) * 4)
+            else:
+                print("Total: ", total, "Of:", maxScore,"*")
+                print((total / maxScore) * 4)
+        else: 
+            print(class_[0]+":")
+            print("No grades found")
 def getGrade(gradeID, classID):
     cursor.execute(f"SELECT * FROM {classID} WHERE id={gradeID}")
     grade = cursor.fetchone()
@@ -122,7 +126,7 @@ def editGrade(classID):
     print(f"Grade: {grade[2]}/{grade[3]}")
     newGrade = intBlankInput(f"Please enter the new grade (old: {grade[2]})")
     newMaxGrade = intBlankInput(f"Please enter the new max grade (old: {grade[3]})")
-    newName = intBlankInput(f"Please enter the new Name (old: {grade[1]})")
+    newName = input(f"Please enter the new Name (old: {grade[1]})")
 
     if newGrade == "":
         newGrade = grade[2]
@@ -139,9 +143,10 @@ def editClass():
     classID = input('Enter current class ID: ')
     while classID not in allIds: 
         classID = input(colors.genRedLine("Not a valid id, please try again"))
-    name = input('Enter new class display name (ie: Python I): ')
-    id = input('Enter new class ID (ie: CSC235): ')
-    totalPoints = intInput('Enter new total points: ')
+    old = cursor.execute(f'SELECT * FROM classes WHERE id="{classID}"').fetchone()
+    name = input(f'Enter new class display name (old: {old[1]}): ')
+    id = input(f'Enter new class ID (old: {old[0]}): ')
+    totalPoints = intInput(f'Enter new total points (old: {old[2]}): ')
     try:
         cursor.execute(f'UPDATE classes SET id="{id}", name="{name}", totalPoints={totalPoints} WHERE id="{classID}"')
         conn.commit()
@@ -183,7 +188,7 @@ while True:
         viewGrades()
     elif choice == 5:
         colors.printYellowLine("Editing a grade or class")
-        choices(["Grade", "Class"], "Please select a choice")
+        choice = choices(["Grade", "Class"], "Please select a choice")
         if choice == 1:
             viewClasses()
             classID = viewGrades()
