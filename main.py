@@ -134,6 +134,20 @@ def editGrade(classID):
     cursor.execute(cmd)
     conn.commit()
 
+def editClass():
+    allIds = viewClasses()
+    classID = input('Enter current class ID: ')
+    while classID not in allIds: 
+        classID = input(colors.genRedLine("Not a valid id, please try again"))
+    name = input('Enter new class display name (ie: Python I): ')
+    id = input('Enter new class ID (ie: CSC235): ')
+    totalPoints = intInput('Enter new total points: ')
+    try:
+        cursor.execute(f'UPDATE classes SET id="{id}", name="{name}", totalPoints={totalPoints} WHERE id="{classID}"')
+        conn.commit()
+        colors.printGreenLine('Class edited')
+    except any:
+        colors.printRedLine("Failed to edit class")
 colors.printBlueLine("\t\tGPA Calulator")
 colors.printPurpleLine("\t     By: Preston Chapman")
 colors.printRedLine("\t\tCSC235 | UAT")
@@ -155,35 +169,32 @@ while True:
         'Enter your choice: ')
 
     if choice == 1:
-        # TODO: Add header
+        colors.printGreenLine("Adding new class")
         addClass()
-        input()
     elif choice == 2:
-        # TODO: Add header
+        colors.printCyanLine("Viewing classes")
         viewClasses()
-        # TODO: Inform user to push enter after viewing
-        input()
     elif choice == 3:
-        # TODO: Add header
+        colors.printGreenLine("Adding a grade")
         addGrade()
-        input()
     elif choice == 4:
-        # TODO: Add Header
+        colors.printBlueLine("Viewing grades")
         viewClasses()
         viewGrades()
-        input()
     elif choice == 5:
-        # TODO: Add Header
-        # TODO: Add edit class
-        viewClasses()
-        classID = viewGrades()
-        editGrade(classID)
+        colors.printYellowLine("Editing a grade or class")
+        choices(["Grade", "Class"], "Please select a choice")
+        if choice == 1:
+            viewClasses()
+            classID = viewGrades()
+            editGrade(classID)
+        else:
+            editClass()
     elif choice == 6:
-        # TODO: Add header
+        colors.printPurpleLine("Calculating GPA")
         calculateGPA()
-        input()
     elif choice == 7:
-        # TODO Add header
+        print("Help")
         choice = choices([
         'Add new class', 
         'View classes', 
@@ -203,8 +214,7 @@ while True:
             print("This will display the following information")
             print("Class ID")
             print("Class Name")
-            # TODO: Uncomment once complete 
-            # print("Max Score") 
+            print("Max Score") 
         elif choice == 3:
             print("3. Add a grade")
             print("This will add a grade to the database")
@@ -232,3 +242,4 @@ while True:
             print("Then it will print your GPA for the selcted class or for all classes")
     elif choice == 0:
         break
+    print()
